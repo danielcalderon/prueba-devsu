@@ -9,13 +9,18 @@ import java.math.BigDecimal;
 
 @Value
 public class CuentaDTO {
+
     String id;
+
     @NotBlank
     String numeroCuenta;
+
     @NotBlank
     String tipoCuenta;
+
     @Min(0)
     BigDecimal saldoInicial;
+
     @NotNull
     Boolean estado;
 }

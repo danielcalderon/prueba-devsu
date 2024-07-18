@@ -1,5 +1,6 @@
 package com.devsu.prueba.cuentas;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -17,8 +18,16 @@ public class Movimiento {
     @Id
     @GeneratedValue(strategy = UUID)
     private String id;
+
+    @Column
     private LocalDateTime fecha;
+
+    @Column
     private String tipoMovimiento;
+
+    @Column
     private BigDecimal valor;
+
+    @Column
     private BigDecimal saldo;
 }

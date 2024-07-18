@@ -1,28 +1,38 @@
 package com.devsu.prueba.clientes;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 import static jakarta.persistence.GenerationType.UUID;
-import static jakarta.persistence.InheritanceType.JOINED;
 
 @Data
-@Entity
-@Inheritance(strategy = JOINED)
+@MappedSuperclass
 public class Persona {
 
     @Id
     @GeneratedValue(strategy = UUID)
     private String id;
+
+    @Column
     private String nombres;
+
+    @Column
     private String genero;
+
+    @Column
     private LocalDate fechaNacimiento;
+
+    @Column
     private String identificacion;
+
+    @Column
     private String direccion;
+
+    @Column
     private String telefono;
 }

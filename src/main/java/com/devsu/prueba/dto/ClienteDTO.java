@@ -8,23 +8,33 @@ import java.time.LocalDate;
 
 @Value
 public class ClienteDTO {
+
     String id;
+
     @NotBlank
     String nombres;
+
     @NotBlank
     String genero;
+
     @NotNull
     LocalDate fechaNacimiento;
+
     @NotBlank
     String identificacion;
+
     @NotBlank
     String direccion;
+
     @NotBlank
     String telefono;
+
     @NotBlank
-    String clienteId;
+    String usuario;
+
     @NotBlank
     String contrasena;
+
     @NotNull
     Boolean estado;
 }

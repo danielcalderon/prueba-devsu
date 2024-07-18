@@ -1,5 +1,6 @@
 package com.devsu.prueba.cuentas;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,8 +17,16 @@ public class Cuenta {
     @Id
     @GeneratedValue(strategy = UUID)
     private String id;
+
+    @Column
     private String numeroCuenta;
+
+    @Column
     private String tipoCuenta;
+
+    @Column
     private BigDecimal saldoInicial;
-    private boolean estado;
+
+    @Column
+    private Boolean estado;
 }

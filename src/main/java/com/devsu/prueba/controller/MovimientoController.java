@@ -32,8 +32,9 @@ public class MovimientoController {
 
     @PostMapping
     ResponseEntity<MovimientoDTO> postMovimiento(@RequestBody @Valid MovimientoDTO movimientoDTO) {
-        final Movimiento movimiento = movimientoService.create(movimientoDTO);
-        return ResponseEntity.ok(movimientoMapper.toDTO(movimiento));
+        final Movimiento movimiento = movimientoMapper.toEntity(movimientoDTO);
+        final Movimiento saved = movimientoService.create(movimiento);
+        return ResponseEntity.ok(movimientoMapper.toDTO(saved));
     }
 
     @PutMapping("/{movimientoId}")
@@ -41,8 +42,9 @@ public class MovimientoController {
             @PathVariable String movimientoId,
             @RequestBody @Valid MovimientoDTO movimientoDTO) {
         try {
-            final Movimiento movimiento = movimientoService.update(movimientoId, movimientoDTO);
-            return ResponseEntity.ok(movimientoMapper.toDTO(movimiento));
+            final Movimiento movimiento = movimientoMapper.toEntity(movimientoDTO);
+            final Movimiento saved = movimientoService.update(movimientoId, movimiento);
+            return ResponseEntity.ok(movimientoMapper.toDTO(saved));
         } catch (MovimientoNotFoundException e) {
             return new ResponseEntity<>(NOT_FOUND);
         }

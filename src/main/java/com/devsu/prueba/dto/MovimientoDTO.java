@@ -9,13 +9,18 @@ import java.time.LocalDateTime;
 
 @Value
 public class MovimientoDTO {
+
     String id;
+
     @NotNull
     LocalDateTime fecha;
+
     @NotBlank
     String tipoMovimiento;
+
     @NotNull
     BigDecimal valor;
+
     @NotNull
     BigDecimal saldo;
 }

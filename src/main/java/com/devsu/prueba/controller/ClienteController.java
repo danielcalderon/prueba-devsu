@@ -32,15 +32,17 @@ public class ClienteController {
 
     @PostMapping
     ResponseEntity<ClienteDTO> postCliente(@RequestBody @Valid ClienteDTO clienteDTO) {
-        final Cliente cliente = clienteService.create(clienteDTO);
-        return ResponseEntity.ok(clienteMapper.toDTO(cliente));
+        final Cliente cliente = clienteMapper.toEntity(clienteDTO);
+        final Cliente saved = clienteService.create(cliente);
+        return ResponseEntity.ok(clienteMapper.toDTO(saved));
     }
 
     @PutMapping("/{clienteId}")
     ResponseEntity<ClienteDTO> putCliente(@PathVariable String clienteId, @RequestBody @Valid ClienteDTO clienteDTO) {
         try {
-            final Cliente cliente = clienteService.update(clienteId, clienteDTO);
-            return ResponseEntity.ok(clienteMapper.toDTO(cliente));
+            final Cliente cliente = clienteMapper.toEntity(clienteDTO);
+            final Cliente saved = clienteService.update(clienteId, cliente);
+            return ResponseEntity.ok(clienteMapper.toDTO(saved));
         } catch (ClienteNotFoundException e) {
             return new ResponseEntity<>(NOT_FOUND);
         }

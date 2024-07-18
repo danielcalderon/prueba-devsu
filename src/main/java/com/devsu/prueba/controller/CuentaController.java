@@ -32,15 +32,17 @@ public class CuentaController {
 
     @PostMapping
     ResponseEntity<CuentaDTO> postCuenta(@RequestBody @Valid CuentaDTO cuentaDTO) {
-        final Cuenta cuenta = cuentaService.create(cuentaDTO);
-        return ResponseEntity.ok(cuentaMapper.toDTO(cuenta));
+        final Cuenta cuenta = cuentaMapper.toEntity(cuentaDTO);
+        final Cuenta saved = cuentaService.create(cuenta);
+        return ResponseEntity.ok(cuentaMapper.toDTO(saved));
     }
 
     @PutMapping("/{cuentaId}")
     ResponseEntity<CuentaDTO> putCuenta(@PathVariable String cuentaId, @RequestBody @Valid CuentaDTO cuentaDTO) {
         try {
-            final Cuenta cuenta = cuentaService.update(cuentaId, cuentaDTO);
-            return ResponseEntity.ok(cuentaMapper.toDTO(cuenta));
+            final Cuenta cuenta = cuentaMapper.toEntity(cuentaDTO);
+            final Cuenta saved = cuentaService.update(cuentaId, cuenta);
+            return ResponseEntity.ok(cuentaMapper.toDTO(saved));
         } catch (CuentaNotFoundException e) {
             return new ResponseEntity<>(NOT_FOUND);
         }
