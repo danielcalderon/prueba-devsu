@@ -1,16 +1,16 @@
 package com.devsu.clientes.controller;
 
 import com.devsu.clientes.domain.Cliente;
+import com.devsu.clientes.dto.ClienteDTO;
 import com.devsu.clientes.exception.ClienteNotFoundException;
 import com.devsu.clientes.mapper.ClienteMapper;
 import com.devsu.clientes.service.ClienteService;
-import com.devsu.clientes.dto.ClienteDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/clientes")
@@ -34,7 +34,7 @@ public class ClienteController {
     ResponseEntity<ClienteDTO> postCliente(@RequestBody @Valid ClienteDTO clienteDTO) {
         final Cliente cliente = clienteMapper.toEntity(clienteDTO);
         final Cliente saved = clienteService.create(cliente);
-        return ResponseEntity.ok(clienteMapper.toDTO(saved));
+        return new ResponseEntity<>(clienteMapper.toDTO(saved), CREATED);
     }
 
     @PutMapping("/{clienteId}")
@@ -49,8 +49,8 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{clienteId}")
-    ResponseEntity<ClienteDTO> deleteCliente(@PathVariable String clienteId) {
+    ResponseEntity<Void> deleteCliente(@PathVariable String clienteId) {
         clienteService.delete(clienteId);
-        return ResponseEntity.ok(null);
+        return new ResponseEntity<>(NO_CONTENT);
     }
 }

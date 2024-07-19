@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/cuentas")
@@ -34,7 +34,7 @@ public class CuentaController {
     ResponseEntity<CuentaDTO> postCuenta(@RequestBody @Valid CuentaDTO cuentaDTO) {
         final Cuenta cuenta = cuentaMapper.toEntity(cuentaDTO);
         final Cuenta saved = cuentaService.create(cuenta);
-        return ResponseEntity.ok(cuentaMapper.toDTO(saved));
+        return new ResponseEntity<>(cuentaMapper.toDTO(saved), CREATED);
     }
 
     @PutMapping("/{cuentaId}")
@@ -51,6 +51,6 @@ public class CuentaController {
     @DeleteMapping("/{cuentaId}")
     ResponseEntity<CuentaDTO> deleteCuenta(@PathVariable String cuentaId) {
         cuentaService.delete(cuentaId);
-        return ResponseEntity.ok(null);
+        return new ResponseEntity<>(NO_CONTENT);
     }
 }

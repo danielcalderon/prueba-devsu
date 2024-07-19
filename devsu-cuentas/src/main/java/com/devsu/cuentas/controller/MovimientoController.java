@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/movimientos")
@@ -34,7 +34,7 @@ public class MovimientoController {
     ResponseEntity<MovimientoDTO> postMovimiento(@RequestBody @Valid MovimientoDTO movimientoDTO) {
         final Movimiento movimiento = movimientoMapper.toEntity(movimientoDTO);
         final Movimiento saved = movimientoService.create(movimiento);
-        return ResponseEntity.ok(movimientoMapper.toDTO(saved));
+        return new ResponseEntity<>(movimientoMapper.toDTO(saved), CREATED);
     }
 
     @PutMapping("/{movimientoId}")
@@ -53,6 +53,6 @@ public class MovimientoController {
     @DeleteMapping("/{movimientoId}")
     ResponseEntity<MovimientoDTO> deleteMovimiento(@PathVariable String movimientoId) {
         movimientoService.delete(movimientoId);
-        return ResponseEntity.ok(null);
+        return new ResponseEntity<>(NO_CONTENT);
     }
 }

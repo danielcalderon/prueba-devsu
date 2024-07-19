@@ -32,6 +32,7 @@ class ClienteServiceImpl implements ClienteService {
         cliente.setIdentificacion(updateCliente.getIdentificacion());
         cliente.setDireccion(updateCliente.getDireccion());
         cliente.setTelefono(updateCliente.getTelefono());
+        cliente.setUsuario(updateCliente.getUsuario());
         cliente.setContrasena(updateCliente.getContrasena());
         cliente.setEstado(updateCliente.getEstado());
 
