@@ -19,7 +19,7 @@ public class CuentaDTO {
     String tipoCuenta;
 
     @Min(0)
-    BigDecimal saldoInicial;
+    BigDecimal saldo;
 
     @NotNull
     Boolean estado;

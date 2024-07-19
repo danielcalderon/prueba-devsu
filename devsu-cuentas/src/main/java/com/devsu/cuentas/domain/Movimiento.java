@@ -1,14 +1,12 @@
 package com.devsu.cuentas.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.UUID;
 
 @Data
@@ -19,11 +17,14 @@ public class Movimiento {
     @GeneratedValue(strategy = UUID)
     private String id;
 
+    @ManyToOne(fetch = LAZY)
+    private Cuenta cuenta;
+
     @Column
     private LocalDateTime fecha;
 
     @Column
-    private String tipoMovimiento;
+    private TipoMovimiento tipoMovimiento;
 
     @Column
     private BigDecimal valor;

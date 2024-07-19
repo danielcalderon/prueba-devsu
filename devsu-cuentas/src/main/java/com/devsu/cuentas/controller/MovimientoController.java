@@ -10,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 @RequestMapping("/movimientos")
@@ -35,37 +36,5 @@ public class MovimientoController {
         final Movimiento movimiento = movimientoMapper.toEntity(movimientoDTO);
         final Movimiento saved = movimientoService.create(movimiento);
         return new ResponseEntity<>(movimientoMapper.toDTO(saved), CREATED);
-    }
-
-    @PutMapping("/{movimientoId}")
-    ResponseEntity<MovimientoDTO> putMovimiento(
-            @PathVariable String movimientoId,
-            @RequestBody @Valid MovimientoDTO movimientoDTO) {
-        try {
-            final Movimiento movimiento = movimientoMapper.toEntity(movimientoDTO);
-            final Movimiento saved = movimientoService.update(movimientoId, movimiento);
-            return ResponseEntity.ok(movimientoMapper.toDTO(saved));
-        } catch (MovimientoNotFoundException e) {
-            return new ResponseEntity<>(NOT_FOUND);
-        }
-    }
-
-    @PatchMapping("/{movimientoId}")
-    ResponseEntity<MovimientoDTO> patchMovimiento(
-            @PathVariable String movimientoId,
-            @RequestBody MovimientoDTO movimientoDTO) {
-        try {
-            final Movimiento movimiento = movimientoMapper.toEntity(movimientoDTO);
-            final Movimiento saved = movimientoService.patch(movimientoId, movimiento);
-            return ResponseEntity.ok(movimientoMapper.toDTO(saved));
-        } catch (MovimientoNotFoundException e) {
-            return new ResponseEntity<>(NOT_FOUND);
-        }
-    }
-
-    @DeleteMapping("/{movimientoId}")
-    ResponseEntity<MovimientoDTO> deleteMovimiento(@PathVariable String movimientoId) {
-        movimientoService.delete(movimientoId);
-        return new ResponseEntity<>(NO_CONTENT);
     }
 }

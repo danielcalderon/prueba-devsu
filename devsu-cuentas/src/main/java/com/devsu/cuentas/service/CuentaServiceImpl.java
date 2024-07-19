@@ -30,7 +30,7 @@ class CuentaServiceImpl implements CuentaService {
 
         cuenta.setNumeroCuenta(updateCuenta.getNumeroCuenta());
         cuenta.setTipoCuenta(updateCuenta.getTipoCuenta());
-        cuenta.setSaldoInicial(updateCuenta.getSaldoInicial());
+        cuenta.setSaldo(updateCuenta.getSaldo());
         cuenta.setEstado(updateCuenta.getEstado());
 
         return cuentaRepository.save(cuenta);
@@ -46,8 +46,8 @@ class CuentaServiceImpl implements CuentaService {
         if (!isEmpty(patchCuenta.getTipoCuenta())) {
             cuenta.setTipoCuenta(patchCuenta.getTipoCuenta());
         }
-        if (!isEmpty(patchCuenta.getSaldoInicial())) {
-            cuenta.setSaldoInicial(patchCuenta.getSaldoInicial());
+        if (!isEmpty(patchCuenta.getSaldo())) {
+            cuenta.setSaldo(patchCuenta.getSaldo());
         }
         if (!isEmpty(patchCuenta.getEstado())) {
             cuenta.setEstado(patchCuenta.getEstado());

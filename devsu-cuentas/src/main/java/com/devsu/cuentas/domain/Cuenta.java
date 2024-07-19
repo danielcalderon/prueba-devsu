@@ -25,7 +25,7 @@ public class Cuenta {
     private String tipoCuenta;
 
     @Column
-    private BigDecimal saldoInicial;
+    private BigDecimal saldo;
 
     @Column
     private Boolean estado;

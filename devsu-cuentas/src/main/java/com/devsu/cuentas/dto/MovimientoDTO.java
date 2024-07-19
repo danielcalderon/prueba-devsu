@@ -1,5 +1,7 @@
 package com.devsu.cuentas.dto;
 
+import com.devsu.cuentas.domain.TipoMovimiento;
+import com.devsu.cuentas.validator.EnumValidator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Value;
@@ -13,14 +15,17 @@ public class MovimientoDTO {
     String id;
 
     @NotNull
+    String cuentaId;
+
+    @NotNull
     LocalDateTime fecha;
 
     @NotBlank
+    @EnumValidator(enumClass = TipoMovimiento.class)
     String tipoMovimiento;
 
     @NotNull
     BigDecimal valor;
 
-    @NotNull
     BigDecimal saldo;
 }

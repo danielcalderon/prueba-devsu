@@ -255,9 +255,19 @@ class ClienteControllerIntegrationTest {
 
     @Test
     void putClienteNotFound() {
-        // Get cliente
+        // Put cliente
         final ResponseEntity<ClienteDTO> response = this.restTemplate.exchange(
                 url + "/notfound", PUT, new HttpEntity<>(cliente1), ClienteDTO.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+    }
+
+    @Test
+    void patchClienteNotFound() {
+        // Patch cliente
+        final ResponseEntity<ClienteDTO> response = this.restTemplate.exchange(
+                url + "/notfound", PATCH, new HttpEntity<>(cliente1), ClienteDTO.class
         );
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);

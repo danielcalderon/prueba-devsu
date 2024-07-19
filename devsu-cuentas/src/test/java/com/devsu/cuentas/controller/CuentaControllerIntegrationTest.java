@@ -52,7 +52,7 @@ class CuentaControllerIntegrationTest {
                         response.getBody().getId(),
                         cuenta1.getNumeroCuenta(),
                         cuenta1.getTipoCuenta(),
-                        cuenta1.getSaldoInicial(),
+                        cuenta1.getSaldo(),
                         cuenta1.getEstado()
                 )
         );
@@ -80,7 +80,7 @@ class CuentaControllerIntegrationTest {
                         id,
                         cuenta1.getNumeroCuenta(),
                         cuenta1.getTipoCuenta(),
-                        cuenta1.getSaldoInicial(),
+                        cuenta1.getSaldo(),
                         cuenta1.getEstado()
                 )
         );
@@ -108,7 +108,7 @@ class CuentaControllerIntegrationTest {
                         id,
                         cuenta2.getNumeroCuenta(),
                         cuenta2.getTipoCuenta(),
-                        cuenta2.getSaldoInicial(),
+                        cuenta2.getSaldo(),
                         cuenta2.getEstado()
                 )
         );
@@ -143,7 +143,7 @@ class CuentaControllerIntegrationTest {
                         id,
                         cuenta1.getNumeroCuenta(),
                         "nuevo tipo cuenta",
-                        cuenta1.getSaldoInicial(),
+                        cuenta1.getSaldo(),
                         false
                 )
         );
@@ -208,9 +208,19 @@ class CuentaControllerIntegrationTest {
 
     @Test
     void putCuentaNotFound() {
-        // Get cuenta
+        // Put cuenta
         final ResponseEntity<CuentaDTO> response = this.restTemplate.exchange(
                 url + "/notfound", PUT, new HttpEntity<>(cuenta1), CuentaDTO.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+    }
+
+    @Test
+    void patchCuentaNotFound() {
+        // Patch cuenta
+        final ResponseEntity<CuentaDTO> response = this.restTemplate.exchange(
+                url + "/notfound", PATCH, new HttpEntity<>(cuenta1), CuentaDTO.class
         );
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
