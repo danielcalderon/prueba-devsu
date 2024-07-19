@@ -214,9 +214,10 @@ class ClienteControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(NO_CONTENT);
 
         // Get cliente
-        response = this.restTemplate.getForEntity(url + "/" + id, ClienteDTO.class);
+        ResponseEntity<String> responseNotFound = this.restTemplate.getForEntity(url + "/" + id, String.class);
 
-        assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+        assertThat(responseNotFound.getStatusCode()).isEqualTo(NOT_FOUND);
+        assertThat(responseNotFound.getBody()).contains("Cliente no existente");
     }
 
     @Test
@@ -248,29 +249,32 @@ class ClienteControllerIntegrationTest {
     @Test
     void getClienteNotFound() {
         // Get cliente
-        final ResponseEntity<ClienteDTO> response = this.restTemplate.getForEntity(url + "/notfound", ClienteDTO.class);
+        final ResponseEntity<String> response = this.restTemplate.getForEntity(url + "/notfound", String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+        assertThat(response.getBody()).contains("Cliente no existente");
     }
 
     @Test
     void putClienteNotFound() {
         // Put cliente
-        final ResponseEntity<ClienteDTO> response = this.restTemplate.exchange(
-                url + "/notfound", PUT, new HttpEntity<>(cliente1), ClienteDTO.class
+        final ResponseEntity<String> response = this.restTemplate.exchange(
+                url + "/notfound", PUT, new HttpEntity<>(cliente1), String.class
         );
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+        assertThat(response.getBody()).contains("Cliente no existente");
     }
 
     @Test
     void patchClienteNotFound() {
         // Patch cliente
-        final ResponseEntity<ClienteDTO> response = this.restTemplate.exchange(
-                url + "/notfound", PATCH, new HttpEntity<>(cliente1), ClienteDTO.class
+        final ResponseEntity<String> response = this.restTemplate.exchange(
+                url + "/notfound", PATCH, new HttpEntity<>(cliente1), String.class
         );
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+        assertThat(response.getBody()).contains("Cliente no existente");
     }
 
     @Test

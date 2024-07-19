@@ -2,7 +2,6 @@ package com.devsu.cuentas.controller;
 
 import com.devsu.cuentas.domain.Cuenta;
 import com.devsu.cuentas.dto.CuentaDTO;
-import com.devsu.cuentas.exception.CuentaNotFoundException;
 import com.devsu.cuentas.mapper.CuentaMapper;
 import com.devsu.cuentas.service.CuentaService;
 import jakarta.validation.Valid;
@@ -10,7 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/cuentas")
@@ -22,12 +22,8 @@ public class CuentaController {
 
     @GetMapping("/{cuentaId}")
     ResponseEntity<CuentaDTO> getCuenta(@PathVariable String cuentaId) {
-        try {
-            final Cuenta cuenta = cuentaService.get(cuentaId);
-            return ResponseEntity.ok(cuentaMapper.toDTO(cuenta));
-        } catch (CuentaNotFoundException e) {
-            return new ResponseEntity<>(NOT_FOUND);
-        }
+        final Cuenta cuenta = cuentaService.get(cuentaId);
+        return ResponseEntity.ok(cuentaMapper.toDTO(cuenta));
     }
 
     @PostMapping
@@ -39,24 +35,16 @@ public class CuentaController {
 
     @PutMapping("/{cuentaId}")
     ResponseEntity<CuentaDTO> putCuenta(@PathVariable String cuentaId, @RequestBody @Valid CuentaDTO cuentaDTO) {
-        try {
-            final Cuenta cuenta = cuentaMapper.toEntity(cuentaDTO);
-            final Cuenta saved = cuentaService.update(cuentaId, cuenta);
-            return ResponseEntity.ok(cuentaMapper.toDTO(saved));
-        } catch (CuentaNotFoundException e) {
-            return new ResponseEntity<>(NOT_FOUND);
-        }
+        final Cuenta cuenta = cuentaMapper.toEntity(cuentaDTO);
+        final Cuenta saved = cuentaService.update(cuentaId, cuenta);
+        return ResponseEntity.ok(cuentaMapper.toDTO(saved));
     }
 
     @PatchMapping("/{cuentaId}")
     ResponseEntity<CuentaDTO> patchCuenta(@PathVariable String cuentaId, @RequestBody CuentaDTO cuentaDTO) {
-        try {
-            final Cuenta cuenta = cuentaMapper.toEntity(cuentaDTO);
-            final Cuenta saved = cuentaService.patch(cuentaId, cuenta);
-            return ResponseEntity.ok(cuentaMapper.toDTO(saved));
-        } catch (CuentaNotFoundException e) {
-            return new ResponseEntity<>(NOT_FOUND);
-        }
+        final Cuenta cuenta = cuentaMapper.toEntity(cuentaDTO);
+        final Cuenta saved = cuentaService.patch(cuentaId, cuenta);
+        return ResponseEntity.ok(cuentaMapper.toDTO(saved));
     }
 
     @DeleteMapping("/{cuentaId}")

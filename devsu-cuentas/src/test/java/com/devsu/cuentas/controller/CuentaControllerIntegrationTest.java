@@ -167,9 +167,10 @@ class CuentaControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(NO_CONTENT);
 
         // Get cuenta
-        response = this.restTemplate.getForEntity(url + "/" + id, CuentaDTO.class);
+        ResponseEntity<String> responseotFound = this.restTemplate.getForEntity(url + "/" + id, String.class);
 
-        assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+        assertThat(responseotFound.getStatusCode()).isEqualTo(NOT_FOUND);
+        assertThat(responseotFound.getBody()).contains("Cuenta no existente");
     }
 
     @Test
@@ -201,29 +202,32 @@ class CuentaControllerIntegrationTest {
     @Test
     void getCuentaNotFound() {
         // Get cuenta
-        final ResponseEntity<CuentaDTO> response = this.restTemplate.getForEntity(url + "/notfound", CuentaDTO.class);
+        final ResponseEntity<String> response = this.restTemplate.getForEntity(url + "/notfound", String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+        assertThat(response.getBody()).contains("Cuenta no existente");
     }
 
     @Test
     void putCuentaNotFound() {
         // Put cuenta
-        final ResponseEntity<CuentaDTO> response = this.restTemplate.exchange(
-                url + "/notfound", PUT, new HttpEntity<>(cuenta1), CuentaDTO.class
+        final ResponseEntity<String> response = this.restTemplate.exchange(
+                url + "/notfound", PUT, new HttpEntity<>(cuenta1), String.class
         );
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+        assertThat(response.getBody()).contains("Cuenta no existente");
     }
 
     @Test
     void patchCuentaNotFound() {
         // Patch cuenta
-        final ResponseEntity<CuentaDTO> response = this.restTemplate.exchange(
-                url + "/notfound", PATCH, new HttpEntity<>(cuenta1), CuentaDTO.class
+        final ResponseEntity<String> response = this.restTemplate.exchange(
+                url + "/notfound", PATCH, new HttpEntity<>(cuenta1), String.class
         );
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+        assertThat(response.getBody()).contains("Cuenta no existente");
     }
 
     @Test

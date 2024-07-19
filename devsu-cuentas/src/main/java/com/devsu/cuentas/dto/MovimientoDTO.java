@@ -20,8 +20,6 @@ public class MovimientoDTO {
     @NotNull
     LocalDateTime fecha;
 
-    @NotBlank
-    @EnumValidator(enumClass = TipoMovimiento.class)
     String tipoMovimiento;
 
     @NotNull

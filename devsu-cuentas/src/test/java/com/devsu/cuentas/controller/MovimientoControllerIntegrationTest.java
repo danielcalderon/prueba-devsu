@@ -16,7 +16,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static java.math.BigDecimal.ONE;
-import static java.time.LocalDateTime.now;
 import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -38,6 +37,8 @@ class MovimientoControllerIntegrationTest {
 
     private MovimientoDTO retiro;
 
+    private MovimientoDTO retiroSaldoInsuficiente;
+
     @BeforeEach
     public void setUp() {
         restTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
@@ -53,8 +54,8 @@ class MovimientoControllerIntegrationTest {
                 null,
                 requireNonNull(response.getBody()).getId(),
                 LocalDateTime.of(2024, 6, 12, 13, 23, 56),
-                "DEPOSITO",
-                BigDecimal.valueOf(33.65),
+                null,
+                BigDecimal.valueOf(+33.65),
                 null
         );
 
@@ -65,8 +66,17 @@ class MovimientoControllerIntegrationTest {
                 null,
                 requireNonNull(response.getBody()).getId(),
                 LocalDateTime.of(2022, 1, 3, 5, 21, 33),
-                "RETIRO",
-                BigDecimal.valueOf(22.10),
+                null,
+                BigDecimal.valueOf(-22.10),
+                null
+        );
+
+        retiroSaldoInsuficiente = new MovimientoDTO(
+                null,
+                requireNonNull(response.getBody()).getId(),
+                LocalDateTime.of(2022, 1, 3, 5, 21, 33),
+                null,
+                cuenta2.getSaldo().add(BigDecimal.valueOf(100)).negate(),
                 null
         );
     }
@@ -85,7 +95,7 @@ class MovimientoControllerIntegrationTest {
                         response.getBody().getId(),
                         deposito.getCuentaId(),
                         deposito.getFecha(),
-                        deposito.getTipoMovimiento(),
+                        "DEPOSITO",
                         deposito.getValor(),
                         response.getBody().getSaldo()
                 )
@@ -113,6 +123,7 @@ class MovimientoControllerIntegrationTest {
         final BigDecimal saldoMovimiento = requireNonNull(responseMovimiento.getBody()).getSaldo();
         final BigDecimal saldoCuenta = requireNonNull(responseCuenta.getBody()).getSaldo();
 
+        assertThat(responseMovimiento.getBody().getTipoMovimiento()).isEqualTo("DEPOSITO");
         assertThat(saldoMovimiento).isEqualTo(saldoInicial.add(deposito.getValor()));
         assertThat(saldoCuenta).isEqualTo(saldoInicial.add(deposito.getValor()));
     }
@@ -128,7 +139,7 @@ class MovimientoControllerIntegrationTest {
 
         final BigDecimal saldoInicial = requireNonNull(responseCuenta.getBody()).getSaldo();
 
-        // Post deposito
+        // Post retiro
         final ResponseEntity<MovimientoDTO> responseMovimiento = this.restTemplate.postForEntity(
                 url, retiro, MovimientoDTO.class
         );
@@ -138,8 +149,21 @@ class MovimientoControllerIntegrationTest {
         final BigDecimal saldoMovimiento = requireNonNull(responseMovimiento.getBody()).getSaldo();
         final BigDecimal saldoCuenta = requireNonNull(responseCuenta.getBody()).getSaldo();
 
-        assertThat(saldoMovimiento).isEqualTo(saldoInicial.subtract(retiro.getValor()));
-        assertThat(saldoCuenta).isEqualTo(saldoInicial.subtract(retiro.getValor()));
+        assertThat(responseMovimiento.getBody().getTipoMovimiento()).isEqualTo("RETIRO");
+        assertThat(saldoMovimiento).isEqualTo(saldoInicial.subtract(retiro.getValor().abs()));
+        assertThat(saldoCuenta).isEqualTo(saldoInicial.subtract(retiro.getValor().abs()));
+    }
+
+    @Test
+    void postMovimientoRetiroSaldoNoDisponible() {
+        // Post retiro
+        final ResponseEntity<String> response = this.restTemplate.postForEntity(
+                url, retiroSaldoInsuficiente, String.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(PAYMENT_REQUIRED);
+        System.out.println(response.getBody());
+        assertThat(response.getBody()).contains("Saldo no disponible");
     }
 
     @Test
@@ -164,7 +188,7 @@ class MovimientoControllerIntegrationTest {
                         id,
                         deposito.getCuentaId(),
                         deposito.getFecha(),
-                        deposito.getTipoMovimiento(),
+                        "DEPOSITO",
                         deposito.getValor(),
                         response.getBody().getSaldo()
                 )
@@ -227,7 +251,7 @@ class MovimientoControllerIntegrationTest {
 
     @Test
     void postMovimientoBadRequest() {
-        final MovimientoDTO movimientoNull = new MovimientoDTO(null, "c", now(), "tipo_invalido", ONE, ONE);
+        final MovimientoDTO movimientoNull = new MovimientoDTO(null, "c", null, null, ONE, ONE);
         final ResponseEntity<MovimientoDTO> response = this.restTemplate.postForEntity(url, movimientoNull, MovimientoDTO.class);
 
         assertThat(response.getStatusCode()).isEqualTo(BAD_REQUEST);
@@ -236,8 +260,9 @@ class MovimientoControllerIntegrationTest {
     @Test
     void getMovimientoNotFound() {
         // Get movimiento
-        final ResponseEntity<MovimientoDTO> response = this.restTemplate.getForEntity(url + "/notfound", MovimientoDTO.class);
+        final ResponseEntity<String> response = this.restTemplate.getForEntity(url + "/notfound", String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+        assertThat(response.getBody()).contains("Movimiento no existente");
     }
 }

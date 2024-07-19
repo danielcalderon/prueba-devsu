@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface MovimientoMapper {
 
     @Mapping(source = "cuentaId", target = "cuenta.id")
+    @Mapping(target = "tipoMovimiento", ignore = true)
     Movimiento toEntity(MovimientoDTO movimientoDTO);
 
     @Mapping(source = "cuenta.id", target = "cuentaId")

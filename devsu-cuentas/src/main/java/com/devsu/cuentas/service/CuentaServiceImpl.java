@@ -15,7 +15,7 @@ class CuentaServiceImpl implements CuentaService {
     private final CuentaRepository cuentaRepository;
 
     @Override
-    public Cuenta get(String cuentaId) {
+    public Cuenta get(String cuentaId) throws CuentaNotFoundException {
         return cuentaRepository.findById(cuentaId).orElseThrow(CuentaNotFoundException::new);
     }
 
@@ -25,7 +25,7 @@ class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
-    public Cuenta update(String cuentaId, Cuenta updateCuenta) {
+    public Cuenta update(String cuentaId, Cuenta updateCuenta) throws CuentaNotFoundException {
         final Cuenta cuenta = get(cuentaId);
 
         cuenta.setNumeroCuenta(updateCuenta.getNumeroCuenta());
