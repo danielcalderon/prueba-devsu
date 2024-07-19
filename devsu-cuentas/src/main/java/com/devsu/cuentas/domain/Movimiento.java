@@ -30,5 +30,8 @@ public class Movimiento {
     private BigDecimal valor;
 
     @Column
-    private BigDecimal saldo;
+    private BigDecimal saldoInicial;
+
+    @Column
+    private BigDecimal saldoFinal;
 }

@@ -28,6 +28,7 @@ class CuentaServiceImpl implements CuentaService {
     public Cuenta update(String cuentaId, Cuenta updateCuenta) throws CuentaNotFoundException {
         final Cuenta cuenta = get(cuentaId);
 
+        cuenta.setClienteId(updateCuenta.getClienteId());
         cuenta.setNumeroCuenta(updateCuenta.getNumeroCuenta());
         cuenta.setTipoCuenta(updateCuenta.getTipoCuenta());
         cuenta.setSaldo(updateCuenta.getSaldo());
@@ -40,6 +41,9 @@ class CuentaServiceImpl implements CuentaService {
     public Cuenta patch(String cuentaId, Cuenta patchCuenta) throws CuentaNotFoundException {
         final Cuenta cuenta = get(cuentaId);
 
+        if (!isEmpty(patchCuenta.getClienteId())) {
+            cuenta.setClienteId(patchCuenta.getClienteId());
+        }
         if (!isEmpty(patchCuenta.getNumeroCuenta())) {
             cuenta.setNumeroCuenta(patchCuenta.getNumeroCuenta());
         }

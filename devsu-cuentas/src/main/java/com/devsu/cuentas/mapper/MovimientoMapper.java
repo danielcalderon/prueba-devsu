@@ -10,6 +10,8 @@ public interface MovimientoMapper {
 
     @Mapping(source = "cuentaId", target = "cuenta.id")
     @Mapping(target = "tipoMovimiento", ignore = true)
+    @Mapping(target = "saldoInicial", ignore = true)
+    @Mapping(target = "saldoFinal", ignore = true)
     Movimiento toEntity(MovimientoDTO movimientoDTO);
 
     @Mapping(source = "cuenta.id", target = "cuentaId")

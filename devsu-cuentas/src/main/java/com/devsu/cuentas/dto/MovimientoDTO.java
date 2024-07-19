@@ -25,5 +25,7 @@ public class MovimientoDTO {
     @NotNull
     BigDecimal valor;
 
-    BigDecimal saldo;
+    BigDecimal saldoInicial;
+
+    BigDecimal saldoFinal;
 }

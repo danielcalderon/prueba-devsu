@@ -12,6 +12,9 @@ public class CuentaDTO {
 
     String id;
 
+    @NotNull
+    String clienteId;
+
     @NotBlank
     String numeroCuenta;
 

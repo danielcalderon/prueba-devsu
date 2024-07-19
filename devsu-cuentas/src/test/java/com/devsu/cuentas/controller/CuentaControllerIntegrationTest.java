@@ -29,9 +29,9 @@ class CuentaControllerIntegrationTest {
 
     private String url;
 
-    private final CuentaDTO cuenta1 = new CuentaDTO(null, "1234", "Ahorros", BigDecimal.valueOf(0.01), true);
+    private final CuentaDTO cuenta1 = new CuentaDTO(null, "cliente1", "1234", "Ahorros", BigDecimal.valueOf(0.01), true);
 
-    private final CuentaDTO cuenta2 = new CuentaDTO(null, "5678", "Corriente", BigDecimal.valueOf(33.44), true);
+    private final CuentaDTO cuenta2 = new CuentaDTO(null, "cliente2", "5678", "Corriente", BigDecimal.valueOf(33.44), true);
 
     @BeforeEach
     public void setUp() {
@@ -50,6 +50,7 @@ class CuentaControllerIntegrationTest {
         assertThat(response.getBody()).isEqualTo(
                 new CuentaDTO(
                         response.getBody().getId(),
+                        cuenta1.getClienteId(),
                         cuenta1.getNumeroCuenta(),
                         cuenta1.getTipoCuenta(),
                         cuenta1.getSaldo(),
@@ -78,6 +79,7 @@ class CuentaControllerIntegrationTest {
         assertThat(response.getBody()).isEqualTo(
                 new CuentaDTO(
                         id,
+                        cuenta1.getClienteId(),
                         cuenta1.getNumeroCuenta(),
                         cuenta1.getTipoCuenta(),
                         cuenta1.getSaldo(),
@@ -106,6 +108,7 @@ class CuentaControllerIntegrationTest {
         assertThat(response.getBody()).isEqualTo(
                 new CuentaDTO(
                         id,
+                        cuenta2.getClienteId(),
                         cuenta2.getNumeroCuenta(),
                         cuenta2.getTipoCuenta(),
                         cuenta2.getSaldo(),
@@ -130,6 +133,7 @@ class CuentaControllerIntegrationTest {
         final CuentaDTO cuentaPatch = new CuentaDTO(
                 null,
                 null,
+                null,
                 "nuevo tipo cuenta",
                 null,
                 false
@@ -141,6 +145,7 @@ class CuentaControllerIntegrationTest {
         assertThat(response.getBody()).isEqualTo(
                 new CuentaDTO(
                         id,
+                        cuenta1.getClienteId(),
                         cuenta1.getNumeroCuenta(),
                         "nuevo tipo cuenta",
                         cuenta1.getSaldo(),
@@ -175,7 +180,7 @@ class CuentaControllerIntegrationTest {
 
     @Test
     void postCuentaBadRequest() {
-        final CuentaDTO cuentaNull = new CuentaDTO(null, null, null, null, null);
+        final CuentaDTO cuentaNull = new CuentaDTO(null, null, null, null, null, null);
         final ResponseEntity<CuentaDTO> response = this.restTemplate.postForEntity(url, cuentaNull, CuentaDTO.class);
 
         assertThat(response.getStatusCode()).isEqualTo(BAD_REQUEST);
@@ -193,7 +198,7 @@ class CuentaControllerIntegrationTest {
 
         final String id = response.getBody().getId();
 
-        final CuentaDTO cuentaNull = new CuentaDTO(null, null, null, null, null);
+        final CuentaDTO cuentaNull = new CuentaDTO(null, null, null, null, null, null);
         response = this.restTemplate.exchange(url + "/" + id, PUT, new HttpEntity<>(cuentaNull), CuentaDTO.class);
 
         assertThat(response.getStatusCode()).isEqualTo(BAD_REQUEST);

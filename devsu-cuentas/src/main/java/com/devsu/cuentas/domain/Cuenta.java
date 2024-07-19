@@ -19,6 +19,9 @@ public class Cuenta {
     private String id;
 
     @Column
+    private String clienteId;
+
+    @Column
     private String numeroCuenta;
 
     @Column
