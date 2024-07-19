@@ -48,6 +48,17 @@ public class ClienteController {
         }
     }
 
+    @PatchMapping("/{clienteId}")
+    ResponseEntity<ClienteDTO> patchCliente(@PathVariable String clienteId, @RequestBody ClienteDTO clienteDTO) {
+        try {
+            final Cliente cliente = clienteMapper.toEntity(clienteDTO);
+            final Cliente saved = clienteService.patch(clienteId, cliente);
+            return ResponseEntity.ok(clienteMapper.toDTO(saved));
+        } catch (ClienteNotFoundException e) {
+            return new ResponseEntity<>(NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("/{clienteId}")
     ResponseEntity<Void> deleteCliente(@PathVariable String clienteId) {
         clienteService.delete(clienteId);

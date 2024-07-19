@@ -1,10 +1,10 @@
 package com.devsu.cuentas.controller;
 
-import com.devsu.cuentas.exception.CuentaNotFoundException;
-import com.devsu.cuentas.service.CuentaService;
 import com.devsu.cuentas.domain.Cuenta;
 import com.devsu.cuentas.dto.CuentaDTO;
+import com.devsu.cuentas.exception.CuentaNotFoundException;
 import com.devsu.cuentas.mapper.CuentaMapper;
+import com.devsu.cuentas.service.CuentaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +42,17 @@ public class CuentaController {
         try {
             final Cuenta cuenta = cuentaMapper.toEntity(cuentaDTO);
             final Cuenta saved = cuentaService.update(cuentaId, cuenta);
+            return ResponseEntity.ok(cuentaMapper.toDTO(saved));
+        } catch (CuentaNotFoundException e) {
+            return new ResponseEntity<>(NOT_FOUND);
+        }
+    }
+
+    @PatchMapping("/{cuentaId}")
+    ResponseEntity<CuentaDTO> patchCuenta(@PathVariable String cuentaId, @RequestBody CuentaDTO cuentaDTO) {
+        try {
+            final Cuenta cuenta = cuentaMapper.toEntity(cuentaDTO);
+            final Cuenta saved = cuentaService.patch(cuentaId, cuenta);
             return ResponseEntity.ok(cuentaMapper.toDTO(saved));
         } catch (CuentaNotFoundException e) {
             return new ResponseEntity<>(NOT_FOUND);

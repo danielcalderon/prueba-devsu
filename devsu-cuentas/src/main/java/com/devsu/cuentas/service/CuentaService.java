@@ -11,5 +11,7 @@ public interface CuentaService {
 
     Cuenta update(String cuentaId, Cuenta cuenta) throws CuentaNotFoundException;
 
+    Cuenta patch(String cuentaId, Cuenta cuenta) throws CuentaNotFoundException;
+
     void delete(String cuentaId) throws CuentaNotFoundException;
 }

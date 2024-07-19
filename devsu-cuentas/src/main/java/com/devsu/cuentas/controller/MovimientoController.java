@@ -1,10 +1,10 @@
 package com.devsu.cuentas.controller;
 
 import com.devsu.cuentas.domain.Movimiento;
-import com.devsu.cuentas.service.MovimientoService;
 import com.devsu.cuentas.dto.MovimientoDTO;
 import com.devsu.cuentas.exception.MovimientoNotFoundException;
 import com.devsu.cuentas.mapper.MovimientoMapper;
+import com.devsu.cuentas.service.MovimientoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +44,19 @@ public class MovimientoController {
         try {
             final Movimiento movimiento = movimientoMapper.toEntity(movimientoDTO);
             final Movimiento saved = movimientoService.update(movimientoId, movimiento);
+            return ResponseEntity.ok(movimientoMapper.toDTO(saved));
+        } catch (MovimientoNotFoundException e) {
+            return new ResponseEntity<>(NOT_FOUND);
+        }
+    }
+
+    @PatchMapping("/{movimientoId}")
+    ResponseEntity<MovimientoDTO> patchMovimiento(
+            @PathVariable String movimientoId,
+            @RequestBody MovimientoDTO movimientoDTO) {
+        try {
+            final Movimiento movimiento = movimientoMapper.toEntity(movimientoDTO);
+            final Movimiento saved = movimientoService.patch(movimientoId, movimiento);
             return ResponseEntity.ok(movimientoMapper.toDTO(saved));
         } catch (MovimientoNotFoundException e) {
             return new ResponseEntity<>(NOT_FOUND);

@@ -6,6 +6,8 @@ import com.devsu.clientes.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static org.springframework.util.ObjectUtils.isEmpty;
+
 @Service
 @RequiredArgsConstructor
 class ClienteServiceImpl implements ClienteService {
@@ -35,6 +37,41 @@ class ClienteServiceImpl implements ClienteService {
         cliente.setUsuario(updateCliente.getUsuario());
         cliente.setContrasena(updateCliente.getContrasena());
         cliente.setEstado(updateCliente.getEstado());
+
+        return clienteRepository.save(cliente);
+    }
+
+    @Override
+    public Cliente patch(String clienteId, Cliente patchCliente) throws ClienteNotFoundException {
+        final Cliente cliente = get(clienteId);
+
+        if (!isEmpty(patchCliente.getNombres())) {
+            cliente.setNombres(patchCliente.getNombres());
+        }
+        if (!isEmpty(patchCliente.getGenero())) {
+            cliente.setGenero(patchCliente.getGenero());
+        }
+        if (!isEmpty(patchCliente.getFechaNacimiento())) {
+            cliente.setFechaNacimiento(patchCliente.getFechaNacimiento());
+        }
+        if (!isEmpty(patchCliente.getIdentificacion())) {
+            cliente.setIdentificacion(patchCliente.getIdentificacion());
+        }
+        if (!isEmpty(patchCliente.getDireccion())) {
+            cliente.setDireccion(patchCliente.getDireccion());
+        }
+        if (!isEmpty(patchCliente.getTelefono())) {
+            cliente.setTelefono(patchCliente.getTelefono());
+        }
+        if (!isEmpty(patchCliente.getUsuario())) {
+            cliente.setUsuario(patchCliente.getUsuario());
+        }
+        if (!isEmpty(patchCliente.getContrasena())) {
+            cliente.setContrasena(patchCliente.getContrasena());
+        }
+        if (!isEmpty(patchCliente.getEstado())) {
+            cliente.setEstado(patchCliente.getEstado());
+        }
 
         return clienteRepository.save(cliente);
     }

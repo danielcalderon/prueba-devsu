@@ -9,14 +9,14 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.PUT;
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -48,6 +48,8 @@ class MovimientoControllerIntegrationTest {
 
     @BeforeEach
     public void setUp() {
+        restTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
         url = "http://localhost:" + port + "/movimientos";
     }
 
@@ -126,6 +128,41 @@ class MovimientoControllerIntegrationTest {
     }
 
     @Test
+    void patchMovimiento() {
+        // Post movimiento
+        ResponseEntity<MovimientoDTO> response;
+        response = this.restTemplate.postForEntity(url, movimiento1, MovimientoDTO.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(CREATED);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getId()).isNotNull().isNotEmpty();
+
+        final String id = response.getBody().getId();
+
+        // Patch movimiento
+        final MovimientoDTO movimientoPatch = new MovimientoDTO(
+                null,
+                null,
+                "nuevo tipo movimiento",
+                null,
+                BigDecimal.valueOf(22.12)
+        );
+        response = this.restTemplate.exchange(url + "/" + id, PATCH, new HttpEntity<>(movimientoPatch), MovimientoDTO.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody()).isEqualTo(
+                new MovimientoDTO(
+                        id,
+                        movimiento1.getFecha(),
+                        "nuevo tipo movimiento",
+                        movimiento1.getValor(),
+                        BigDecimal.valueOf(22.12)
+                )
+        );
+    }
+
+    @Test
     void deleteMovimiento() {
         // Post movimiento
         ResponseEntity<MovimientoDTO> response;
@@ -177,7 +214,17 @@ class MovimientoControllerIntegrationTest {
     @Test
     void getMovimientoNotFound() {
         // Get movimiento
-        ResponseEntity<MovimientoDTO> response = this.restTemplate.getForEntity(url + "/notfound", MovimientoDTO.class);
+        final ResponseEntity<MovimientoDTO> response = this.restTemplate.getForEntity(url + "/notfound", MovimientoDTO.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+    }
+
+    @Test
+    void putMovimientoNotFound() {
+        // Get movimiento
+        final ResponseEntity<MovimientoDTO> response = this.restTemplate.exchange(
+                url + "/notfound", PUT, new HttpEntity<>(movimiento1), MovimientoDTO.class
+        );
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
     }
@@ -185,7 +232,7 @@ class MovimientoControllerIntegrationTest {
     @Test
     void deleteMovimientoNotFound() {
         // Delete movimiento
-        ResponseEntity<MovimientoDTO> response = this.restTemplate.exchange(
+        final ResponseEntity<MovimientoDTO> response = this.restTemplate.exchange(
                 url + "/notfound", DELETE, HttpEntity.EMPTY, MovimientoDTO.class
         );
 

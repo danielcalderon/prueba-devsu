@@ -9,13 +9,13 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.PUT;
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -35,6 +35,8 @@ class CuentaControllerIntegrationTest {
 
     @BeforeEach
     public void setUp() {
+        restTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
         url = "http://localhost:" + port + "/cuentas";
     }
 
@@ -113,6 +115,41 @@ class CuentaControllerIntegrationTest {
     }
 
     @Test
+    void patchCuenta() {
+        // Post cuenta
+        ResponseEntity<CuentaDTO> response;
+        response = this.restTemplate.postForEntity(url, cuenta1, CuentaDTO.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(CREATED);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getId()).isNotNull().isNotEmpty();
+
+        final String id = response.getBody().getId();
+
+        // Patch cuenta
+        final CuentaDTO cuentaPatch = new CuentaDTO(
+                null,
+                null,
+                "nuevo tipo cuenta",
+                null,
+                false
+        );
+        response = this.restTemplate.exchange(url + "/" + id, PATCH, new HttpEntity<>(cuentaPatch), CuentaDTO.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody()).isEqualTo(
+                new CuentaDTO(
+                        id,
+                        cuenta1.getNumeroCuenta(),
+                        "nuevo tipo cuenta",
+                        cuenta1.getSaldoInicial(),
+                        false
+                )
+        );
+    }
+
+    @Test
     void deleteCuenta() {
         // Post cuenta
         ResponseEntity<CuentaDTO> response;
@@ -164,7 +201,17 @@ class CuentaControllerIntegrationTest {
     @Test
     void getCuentaNotFound() {
         // Get cuenta
-        ResponseEntity<CuentaDTO> response = this.restTemplate.getForEntity(url + "/notfound", CuentaDTO.class);
+        final ResponseEntity<CuentaDTO> response = this.restTemplate.getForEntity(url + "/notfound", CuentaDTO.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+    }
+
+    @Test
+    void putCuentaNotFound() {
+        // Get cuenta
+        final ResponseEntity<CuentaDTO> response = this.restTemplate.exchange(
+                url + "/notfound", PUT, new HttpEntity<>(cuenta1), CuentaDTO.class
+        );
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
     }
@@ -172,7 +219,7 @@ class CuentaControllerIntegrationTest {
     @Test
     void deleteCuentaNotFound() {
         // Delete cuenta
-        ResponseEntity<CuentaDTO> response = this.restTemplate.exchange(
+        final ResponseEntity<CuentaDTO> response = this.restTemplate.exchange(
                 url + "/notfound", DELETE, HttpEntity.EMPTY, CuentaDTO.class
         );
 

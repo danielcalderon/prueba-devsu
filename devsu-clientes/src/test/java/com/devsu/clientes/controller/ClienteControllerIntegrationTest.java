@@ -9,13 +9,13 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.PUT;
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -57,6 +57,8 @@ class ClienteControllerIntegrationTest {
 
     @BeforeEach
     public void setUp() {
+        restTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
         url = "http://localhost:" + port + "/clientes";
     }
 
@@ -150,6 +152,51 @@ class ClienteControllerIntegrationTest {
     }
 
     @Test
+    void patchCliente() {
+        // Post cliente
+        ResponseEntity<ClienteDTO> response;
+        response = this.restTemplate.postForEntity(url, cliente1, ClienteDTO.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(CREATED);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getId()).isNotNull().isNotEmpty();
+
+        final String id = response.getBody().getId();
+
+        // Patch cliente
+        final ClienteDTO clientePatch = new ClienteDTO(
+                null,
+                null,
+                null,
+                null,
+                null,
+                "nueva direccion",
+                "nuevo telefono",
+                null,
+                null,
+                null
+        );
+        response = this.restTemplate.exchange(url + "/" + id, PATCH, new HttpEntity<>(clientePatch), ClienteDTO.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody()).isEqualTo(
+                new ClienteDTO(
+                        id,
+                        cliente1.getNombres(),
+                        cliente1.getGenero(),
+                        cliente1.getFechaNacimiento(),
+                        cliente1.getIdentificacion(),
+                        "nueva direccion",
+                        "nuevo telefono",
+                        cliente1.getUsuario(),
+                        cliente1.getContrasena(),
+                        cliente1.getEstado()
+                )
+        );
+    }
+
+    @Test
     void deleteCliente() {
         // Post cliente
         ResponseEntity<ClienteDTO> response;
@@ -201,7 +248,17 @@ class ClienteControllerIntegrationTest {
     @Test
     void getClienteNotFound() {
         // Get cliente
-        ResponseEntity<ClienteDTO> response = this.restTemplate.getForEntity(url + "/notfound", ClienteDTO.class);
+        final ResponseEntity<ClienteDTO> response = this.restTemplate.getForEntity(url + "/notfound", ClienteDTO.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+    }
+
+    @Test
+    void putClienteNotFound() {
+        // Get cliente
+        final ResponseEntity<ClienteDTO> response = this.restTemplate.exchange(
+                url + "/notfound", PUT, new HttpEntity<>(cliente1), ClienteDTO.class
+        );
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
     }
@@ -209,7 +266,7 @@ class ClienteControllerIntegrationTest {
     @Test
     void deleteClienteNotFound() {
         // Delete cliente
-        ResponseEntity<ClienteDTO> response = this.restTemplate.exchange(
+        final ResponseEntity<ClienteDTO> response = this.restTemplate.exchange(
                 url + "/notfound", DELETE, HttpEntity.EMPTY, ClienteDTO.class
         );
 

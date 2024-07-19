@@ -11,5 +11,7 @@ public interface ClienteService {
 
     Cliente update(String clienteId, Cliente cliente) throws ClienteNotFoundException;
 
+    Cliente patch(String clienteId, Cliente cliente) throws ClienteNotFoundException;
+
     void delete(String clienteId) throws ClienteNotFoundException;
 }
