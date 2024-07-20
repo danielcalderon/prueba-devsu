@@ -21,14 +21,16 @@ con docker-compose.
 
 ## Instalación y ejecución
 
+## Requisitos:
+* Java 17
+
 ## Generar los archivos .jar de cada microservicio:
 ```
-./devsu-clientes/mvnw -f ./devsu-clientes/pom.xml package
-./devsu-cuentas/mvnw -f ./devsu-cuentas/pom.xml package
+./devsu-clientes/mvnw -f ./devsu-clientes/pom.xml clean package
+./devsu-cuentas/mvnw -f ./devsu-cuentas/pom.xml clean package
 ```
 
 ## Crear imágenes Docker y ejecutar los contenedores:
 ```
-docker build -t clientes ./devsu-clientes
-docker build -t cuentas ./devsu-cuentas
+docker-compose up
 ```
