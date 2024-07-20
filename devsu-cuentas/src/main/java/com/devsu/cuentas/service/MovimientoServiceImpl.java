@@ -2,8 +2,6 @@ package com.devsu.cuentas.service;
 
 import com.devsu.cuentas.domain.Cuenta;
 import com.devsu.cuentas.domain.Movimiento;
-import com.devsu.cuentas.dto.ItemReporteDTO;
-import com.devsu.cuentas.dto.ReporteDTO;
 import com.devsu.cuentas.exception.CuentaNotFoundException;
 import com.devsu.cuentas.exception.MovimientoNotFoundException;
 import com.devsu.cuentas.exception.SaldoInsuficienteException;
@@ -15,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
 
 import static com.devsu.cuentas.domain.TipoMovimiento.DEPOSITO;
 import static com.devsu.cuentas.domain.TipoMovimiento.RETIRO;
@@ -76,26 +72,5 @@ class MovimientoServiceImpl implements MovimientoService {
             log.error("Error al registrar el movimiento de la cuenta {}", cuentaId, e);
             throw e;
         }
-    }
-
-    @Override
-    public ReporteDTO createReport(LocalDate desde, LocalDate hasta, String clienteId) {
-        final List<Movimiento> movimientos = movimientoRepository.findByFechaAndClienteId(
-                desde.atStartOfDay(), hasta.atStartOfDay(), clienteId
-        );
-
-        final List<ItemReporteDTO> items = movimientos.stream()
-                .map(m -> new ItemReporteDTO(
-                        m.getFecha(),
-                        clienteId,
-                        m.getCuenta().getId(),
-                        m.getCuenta().getTipoCuenta(),
-                        m.getSaldoInicial(),
-                        m.getCuenta().getEstado(),
-                        m.getValor(),
-                        m.getSaldoFinal())
-                ).toList();
-
-        return new ReporteDTO(items);
     }
 }

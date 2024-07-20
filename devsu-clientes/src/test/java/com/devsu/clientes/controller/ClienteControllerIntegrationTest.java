@@ -4,6 +4,8 @@ import com.devsu.clientes.dto.ClienteDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -19,6 +21,7 @@ import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
+@EnableAutoConfiguration(exclude = {RabbitAutoConfiguration.class})
 class ClienteControllerIntegrationTest {
 
     @LocalServerPort
@@ -217,7 +220,7 @@ class ClienteControllerIntegrationTest {
         ResponseEntity<String> responseNotFound = this.restTemplate.getForEntity(url + "/" + id, String.class);
 
         assertThat(responseNotFound.getStatusCode()).isEqualTo(NOT_FOUND);
-        assertThat(responseNotFound.getBody()).contains("Cliente no existente");
+        assertThat(responseNotFound.getBody()).contains("Cliente inexistente");
     }
 
     @Test
@@ -252,7 +255,7 @@ class ClienteControllerIntegrationTest {
         final ResponseEntity<String> response = this.restTemplate.getForEntity(url + "/notfound", String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
-        assertThat(response.getBody()).contains("Cliente no existente");
+        assertThat(response.getBody()).contains("Cliente inexistente");
     }
 
     @Test
@@ -263,7 +266,7 @@ class ClienteControllerIntegrationTest {
         );
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
-        assertThat(response.getBody()).contains("Cliente no existente");
+        assertThat(response.getBody()).contains("Cliente inexistente");
     }
 
     @Test
@@ -274,7 +277,7 @@ class ClienteControllerIntegrationTest {
         );
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
-        assertThat(response.getBody()).contains("Cliente no existente");
+        assertThat(response.getBody()).contains("Cliente inexistente");
     }
 
     @Test

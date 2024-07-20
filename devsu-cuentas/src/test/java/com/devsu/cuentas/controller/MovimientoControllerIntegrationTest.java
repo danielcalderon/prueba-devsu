@@ -245,7 +245,7 @@ class MovimientoControllerIntegrationTest {
         final ResponseEntity<String> response = this.restTemplate.getForEntity(url + "/notfound", String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
-        assertThat(response.getBody()).contains("Movimiento no existente");
+        assertThat(response.getBody()).contains("Movimiento inexistente");
     }
 
     private static MovimientoDTO creaMovimiento(String cuentaId, LocalDateTime fecha, double valor) {

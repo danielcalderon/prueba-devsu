@@ -175,7 +175,7 @@ class CuentaControllerIntegrationTest {
         ResponseEntity<String> responseotFound = this.restTemplate.getForEntity(url + "/" + id, String.class);
 
         assertThat(responseotFound.getStatusCode()).isEqualTo(NOT_FOUND);
-        assertThat(responseotFound.getBody()).contains("Cuenta no existente");
+        assertThat(responseotFound.getBody()).contains("Cuenta inexistente");
     }
 
     @Test
@@ -210,7 +210,7 @@ class CuentaControllerIntegrationTest {
         final ResponseEntity<String> response = this.restTemplate.getForEntity(url + "/notfound", String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
-        assertThat(response.getBody()).contains("Cuenta no existente");
+        assertThat(response.getBody()).contains("Cuenta inexistente");
     }
 
     @Test
@@ -221,7 +221,7 @@ class CuentaControllerIntegrationTest {
         );
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
-        assertThat(response.getBody()).contains("Cuenta no existente");
+        assertThat(response.getBody()).contains("Cuenta inexistente");
     }
 
     @Test
@@ -232,7 +232,7 @@ class CuentaControllerIntegrationTest {
         );
 
         assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
-        assertThat(response.getBody()).contains("Cuenta no existente");
+        assertThat(response.getBody()).contains("Cuenta inexistente");
     }
 
     @Test

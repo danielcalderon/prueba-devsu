@@ -1,7 +1,7 @@
-package com.devsu.cuentas.controller;
+package com.devsu.clientes.controller;
 
-import com.devsu.cuentas.dto.ReporteDTO;
-import com.devsu.cuentas.service.MovimientoService;
+import com.devsu.clientes.dto.ReporteDTO;
+import com.devsu.clientes.service.ReporteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,13 +16,13 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class ReporteController {
 
-    private final MovimientoService movimientoService;
+    private final ReporteService reporteService;
 
     @GetMapping
     ResponseEntity<ReporteDTO> getReporte(
+            @RequestParam String cliente,
             @RequestParam LocalDate fechaDesde,
-            @RequestParam LocalDate fechaHasta,
-            @RequestParam String cliente) {
-        return ResponseEntity.ok(movimientoService.createReport(fechaDesde, fechaHasta, cliente));
+            @RequestParam LocalDate fechaHasta) {
+        return ResponseEntity.ok(reporteService.creaReporte(cliente, fechaDesde, fechaHasta));
     }
 }

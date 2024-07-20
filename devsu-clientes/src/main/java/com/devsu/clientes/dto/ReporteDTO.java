@@ -1,4 +1,4 @@
-package com.devsu.cuentas.dto;
+package com.devsu.clientes.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
