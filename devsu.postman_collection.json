@@ -1,0 +1,718 @@
+{
+	"info": {
+		"_postman_id": "38c3715b-62d3-46d3-a00a-a67ce284d1fa",
+		"name": "devsu",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "480113"
+	},
+	"item": [
+		{
+			"name": "CLIENTES - Crea cliente 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"",
+							"    pm.collectionVariables.set(\"cliente1\", pm.response.json().id);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombres\": \"Jose Lema\",\n    \"genero\": \"M\",\n    \"fechaNacimiento\": \"1970-12-16\",\n    \"identificacion\": \"234235\",\n    \"direccion\": \"Otalvo sn y principal\",\n    \"telefono\": \"082583746\",\n    \"usuario\": \"joselema\",\n    \"contrasena\": \"1234\",\n    \"estado\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoClientes}}/api/clientes",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoClientes}}",
+					"path": [
+						"api",
+						"clientes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CLIENTES - Crea cliente 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"",
+							"    pm.collectionVariables.set(\"cliente2\", pm.response.json().id);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombres\": \"Maria Lopez\",\n    \"genero\": \"F\",\n    \"fechaNacimiento\": \"1990-05-12\",\n    \"identificacion\": \"729842839\",\n    \"direccion\": \"Echeverria 12346\",\n    \"telefono\": \"+2345 002342\",\n    \"usuario\": \"maria\",\n    \"contrasena\": \"helados\",\n    \"estado\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoClientes}}/api/clientes",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoClientes}}",
+					"path": [
+						"api",
+						"clientes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CLIENTES - Get cliente 1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoClientes}}/api/clientes/{{cliente1}}",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoClientes}}",
+					"path": [
+						"api",
+						"clientes",
+						"{{cliente1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CLIENTES - Modifica cliente 1",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombres\": \"Jose Lopez\",\n    \"genero\": \"M\",\n    \"fechaNacimiento\": \"1970-12-16\",\n    \"identificacion\": \"234235\",\n    \"direccion\": \"Echeverria 7960\",\n    \"telefono\": \"082583746\",\n    \"usuario\": \"joselema\",\n    \"contrasena\": \"2345\",\n    \"estado\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoClientes}}/api/clientes/{{cliente1}}",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoClientes}}",
+					"path": [
+						"api",
+						"clientes",
+						"{{cliente1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CLIENTES - Patch cliente 1",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"identificacion\": \"000000\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoClientes}}/api/clientes/{{cliente1}}",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoClientes}}",
+					"path": [
+						"api",
+						"clientes",
+						"{{cliente1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CLIENTES - Elimina cliente 1",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoClientes}}/api/clientes/{{cliente1}}",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoClientes}}",
+					"path": [
+						"api",
+						"clientes",
+						"{{cliente1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CUENTAS - Crea cuenta 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"",
+							"    pm.collectionVariables.set(\"cuenta1\", pm.response.json().id);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"clienteId\": \"{{cliente1}}\",\n    \"numeroCuenta\": \"1234\",\n    \"tipoCuenta\": \"Ahorros\",\n    \"saldo\": 100,\n    \"estado\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoCuentas}}/api/cuentas",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoCuentas}}",
+					"path": [
+						"api",
+						"cuentas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CUENTAS - Crea cuenta 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"",
+							"    pm.collectionVariables.set(\"cuenta2\", pm.response.json().id);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"clienteId\": \"{{cliente2}}\",\n    \"numeroCuenta\": \"5678\",\n    \"tipoCuenta\": \"Corriente\",\n    \"saldo\": 50,\n    \"estado\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoCuentas}}/api/cuentas",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoCuentas}}",
+					"path": [
+						"api",
+						"cuentas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CUENTAS - Get cuenta 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"clienteId\": \"{{cliente1}}\",\n    \"numeroCuenta\": \"1234\",\n    \"tipoCuenta\": \"Ahorros\",\n    \"saldo\": 120,\n    \"estado\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoCuentas}}/api/cuentas/{{cuenta1}}",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoCuentas}}",
+					"path": [
+						"api",
+						"cuentas",
+						"{{cuenta1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CUENTAS - Modifica cuenta 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"clienteId\": \"{{cliente1}}\",\n    \"numeroCuenta\": \"1234\",\n    \"tipoCuenta\": \"Ahorros\",\n    \"saldo\": 120,\n    \"estado\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoCuentas}}/api/cuentas/{{cuenta1}}",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoCuentas}}",
+					"path": [
+						"api",
+						"cuentas",
+						"{{cuenta1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CUENTAS - Patch cuenta 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"saldo\": 120\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoCuentas}}/api/cuentas/{{cuenta1}}",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoCuentas}}",
+					"path": [
+						"api",
+						"cuentas",
+						"{{cuenta1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CUENTAS - Elimina cuenta 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"clienteId\": \"{{cliente1}}\",\n    \"numeroCuenta\": \"1234\",\n    \"tipoCuenta\": \"Ahorros\",\n    \"saldo\": 120,\n    \"estado\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoCuentas}}/api/cuentas/{{cuenta1}}",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoCuentas}}",
+					"path": [
+						"api",
+						"cuentas",
+						"{{cuenta1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MOVIMIENTOS - Crea deposito cuenta 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cuentaId\": \"{{cuenta1}}\",\n    \"fecha\": \"2024-04-22T12:34:55\",\n    \"valor\": 34.55\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoCuentas}}/api/movimientos",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoCuentas}}",
+					"path": [
+						"api",
+						"movimientos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MOVIMIENTOS - Crea retiro cuenta 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cuentaId\": \"{{cuenta1}}\",\n    \"fecha\": \"2024-03-11T12:52:11\",\n    \"valor\": -50\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoCuentas}}/api/movimientos",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoCuentas}}",
+					"path": [
+						"api",
+						"movimientos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MOVIMIENTOS - Crea deposito cuenta 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cuentaId\": \"{{cuenta2}}\",\n    \"fecha\": \"2023-09-12T09:00:02\",\n    \"valor\": 25\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoCuentas}}/api/movimientos",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoCuentas}}",
+					"path": [
+						"api",
+						"movimientos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MOVIMIENTOS - Crea retiro cuenta 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cuentaId\": \"{{cuenta2}}\",\n    \"fecha\": \"2023-04-22T12:34:55\",\n    \"valor\": -20\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoCuentas}}/api/movimientos",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoCuentas}}",
+					"path": [
+						"api",
+						"movimientos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CLIENTES - Get reporte cliente 1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{servidor}}:{{puertoClientes}}/api/reportes?cliente={{cliente1}}&fechaDesde=2022-01-01&fechaHasta=2025-03-01",
+					"protocol": "http",
+					"host": [
+						"{{servidor}}"
+					],
+					"port": "{{puertoClientes}}",
+					"path": [
+						"api",
+						"reportes"
+					],
+					"query": [
+						{
+							"key": "cliente",
+							"value": "{{cliente1}}"
+						},
+						{
+							"key": "fechaDesde",
+							"value": "2022-01-01"
+						},
+						{
+							"key": "fechaHasta",
+							"value": "2025-03-01"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "servidor",
+			"value": "localhost"
+		},
+		{
+			"key": "puertoClientes",
+			"value": "8081"
+		},
+		{
+			"key": "puertoCuentas",
+			"value": "8082",
+			"type": "string"
+		},
+		{
+			"key": "cliente1",
+			"value": ""
+		},
+		{
+			"key": "cliente2",
+			"value": ""
+		},
+		{
+			"key": "cuenta1",
+			"value": ""
+		},
+		{
+			"key": "cuenta2",
+			"value": ""
+		}
+	]
+}
