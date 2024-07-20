@@ -1,0 +1,62 @@
+version: "3"
+services:
+  clientes:
+    build:
+      context: ./devsu-clientes
+      dockerfile: Dockerfile
+    ports:
+      - 18081:8081
+    depends_on:
+      - mariadb
+      - rabbitmq
+    networks:
+      - devsu
+    environment:
+      - DATABASE_HOST=mariadb
+      - RABBIT_HOST=rabbitmq
+
+  cuentas:
+    build:
+      context: ./devsu-cuentas
+      dockerfile: Dockerfile
+    ports:
+      - 18082:8082
+    depends_on:
+      - mariadb
+      - rabbitmq
+    networks:
+      - devsu
+    environment:
+      - DATABASE_HOST=mariadb
+      - RABBIT_HOST=rabbitmq
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 13306:3306
+    networks:
+        - devsu
+    volumes:
+      - datadir:/var/lib/mysql
+      - ./BaseDatos.sql:/docker-entrypoint-initdb.d/schema.sql
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_PASS=devsu
+      - RABBITMQ_DEFAULT_USER=devsu
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - devsu
+
+networks:
+  devsu:
+
+volumes:
+  datadir:

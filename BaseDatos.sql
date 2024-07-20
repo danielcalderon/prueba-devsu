@@ -1,9 +1,11 @@
-CREATE DATABASE `devsu_clientes`;
-CREATE DATABASE `devsu_cuentas`;
+CREATE DATABASE IF NOT EXISTS `devsu_clientes`;
+CREATE DATABASE IF NOT EXISTS `devsu_cuentas`;
+
+USE devsu_clientes;
 
 -- devsu_clientes.cliente definition
 
-CREATE TABLE `cliente` (
+CREATE TABLE IF NOT EXISTS `cliente` (
   `id` char(36) NOT NULL,
   `nombres` varchar(100) NOT NULL,
   `genero` varchar(100) NOT NULL,
@@ -19,7 +21,7 @@ CREATE TABLE `cliente` (
 
 -- devsu_clientes.item_reporte definition
 
-CREATE TABLE `item_reporte` (
+CREATE TABLE IF NOT EXISTS `item_reporte` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cliente_id` char(36) NOT NULL,
   `fecha` datetime NOT NULL,
@@ -35,9 +37,11 @@ CREATE TABLE `item_reporte` (
   CONSTRAINT `item_reporte_cliente_FK` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+USE devsu_cuentas;
+
 -- devsu_cuentas.cuenta definition
 
-CREATE TABLE `cuenta` (
+CREATE TABLE IF NOT EXISTS `cuenta` (
   `id` char(36) NOT NULL,
   `cliente_id` char(36) NOT NULL,
   `numero_cuenta` varchar(100) NOT NULL,
@@ -49,7 +53,7 @@ CREATE TABLE `cuenta` (
 
 -- devsu_cuentas.movimiento definition
 
-CREATE TABLE `movimiento` (
+CREATE TABLE IF NOT EXISTS `movimiento` (
   `id` char(36) NOT NULL,
   `cuenta_id` char(36) NOT NULL,
   `fecha` datetime NOT NULL,
