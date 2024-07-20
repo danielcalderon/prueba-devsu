@@ -77,7 +77,7 @@ class ReporteControllerIntegrationTest {
         CuentaDTO cuenta1 = new CuentaDTO(null, "cliente1", "1234", "Ahorros", BigDecimal.valueOf(100), true);
         cuenta1 = this.restTemplate.postForObject(urlCuentas, cuenta1, CuentaDTO.class);
 
-        CuentaDTO cuenta2 = new CuentaDTO(null, "cliente2", "1234", "Ahorros", BigDecimal.valueOf(100), true);
+        CuentaDTO cuenta2 = new CuentaDTO(null, "cliente2", "1234", "Corriente", BigDecimal.valueOf(100), true);
         cuenta2 = this.restTemplate.postForObject(urlCuentas, cuenta2, CuentaDTO.class);
 
         // Post movimientos
